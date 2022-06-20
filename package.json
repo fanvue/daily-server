@@ -1,6 +1,6 @@
 {
   "name": "daily-server",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "code",
   "main": "dist/index.js",
   "types": "./dist/index.d.ts",
@@ -21,7 +21,10 @@
     "url": "git+https://github.com/fanvue/daily-server.git"
   },
   "keywords": [
-    "onlyfans"
+    "daily-server",
+    "daily.co",
+    "livestreaming",
+    "video-calls"
   ],
   "author": "mshd",
   "license": "UNLICENSED",
