@@ -30,6 +30,11 @@ export interface DomainConfig {
   redirectOnMeetingExit: string;
 }
 
+export interface UpdateRoomRequest {
+  privacy?: Privacy;
+  properties?: RoomConfig;
+}
+
 export interface CreateRoomRequest {
   name?: string;
   privacy?: Privacy;
@@ -191,67 +196,6 @@ export interface Room {
 }
 
 export type RoomConfig = DailyRoomInfo["config"];
-// export interface RoomConfig {
-//   // A unix timestamp (seconds since the epoch.)
-//   // Users cannot join a meeting in this room before this time. Default is <not set>.
-//   nbf?: number;
-
-//   // A unix timestamp (seconds since the epoch.)
-//   // Users cannot join a meeting in this room after this time. Default is <not set>.
-//   exp?: number;
-
-//   // How many people are allowed in this room at the same time.
-//   // Both the default and maximum values depend on the plan that the domain is subscribed to.
-//   maxParticipants?: number;
-
-//   // Skip the initial meeting join page and go straight into the call.
-//   // Default is true for api-created rooms and false for dashboard-created rooms.
-//   autojoin?: boolean;
-
-//   // If a room is non-public, and a user isn't logged in and doesn't have a meeting token,
-//   // then let them "knock" to request access to the room.
-//   // Default is false for api-created rooms and true for dashboard-created rooms.
-//   enableKnocking?: boolean;
-
-//   // Default is true.
-//   enableScreenshare?: boolean;
-
-//   // Default is false.
-//   enableChat?: boolean;
-
-//   // Always start with camera off when a user joins a meeting in the room.
-//   // Default is false.
-//   startVideoOff?: boolean;
-
-//   // Always start with microphone muted when a user joins a meeting in the room.
-//   // Default is false.
-//   startAudioOff?: boolean;
-
-//   // Only the meeting owners are allowed to turn on camera, unmute mic, and share screen.
-//   // Default is false.
-//   ownerOnlyBroadcast?: boolean;
-
-//   // Recording is enabled for the room.
-//   // Allowed values are "cloud", "local", and <not set>.
-//   // Default is <not set>.
-//   enableRecording?: Recording;
-
-//   // If there's a meeting going on at room exp time, end the meeting by kicking everyone out.
-//   // This behavior can be overridden by setting eject properties of a meeting token.
-//   ejectAtRoomExp?: boolean;
-
-//   // Eject a meeting participant this many seconds after the participant joins the meeting.
-//   // You can use this is a default length limit to prevent long meetings.
-//   // This can be overridden by setting eject properties of a meeting token.
-//   ejectAfterElapsed?: boolean;
-
-//   // The default language for the video call UI, for this room.
-//   // You can override this in a user's meeting token.
-//   // You can also set the language dynamically using the front-end library setDailyLang() method.
-//   // Currently supported languages are en and fr.
-//   // You can also set this to user, which will use the browser's current language setting (if it is English or French).
-//   lang?: "en" | "fr" | "user";
-// }
 
 export type LogsRequest = {
   //If true, you get a "logs" array in the results
@@ -333,7 +277,9 @@ export class Daily {
 
   // Create a room
   // https://docs.daily.co/reference#create-room
-  public async createRoom(data: CreateRoomRequest): Promise<Room> {
+  public async createRoom(
+    data: CreateRoomRequest
+  ): Promise<CreateRoomResponse> {
     // console.log(data);
     return this.request({ method: "POST", url: "/rooms", data });
   }
@@ -346,7 +292,10 @@ export class Daily {
 
   // Set a room's privacy and config properties
   // https://docs.daily.co/reference#set-room-configuration
-  public async updateRoom(name: string, data: Room): Promise<Room> {
+  public async updateRoom(
+    name: string,
+    data: UpdateRoomRequest
+  ): Promise<CreateRoomResponse> {
     return this.request({ method: "POST", url: `/rooms/${name}`, data });
   }
 
